@@ -1,5 +1,4 @@
 CREATE DATABASE CommonGround;
-
 # ************************************************************
 # Sequel Pro SQL dump
 # Version 4541
@@ -9,7 +8,7 @@ CREATE DATABASE CommonGround;
 #
 # Host: localhost (MySQL 5.5.5-10.1.19-MariaDB)
 # Database: CommonGround
-# Generation Time: 2016-11-28 18:24:56 +0000
+# Generation Time: 2016-11-28 18:35:29 +0000
 # ************************************************************
 
 
@@ -53,6 +52,22 @@ CREATE TABLE `profiles` (
   `state` varchar(255) DEFAULT NULL,
   `avatar` varchar(255) DEFAULT NULL,
   `user_Id` int(11) unsigned NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+# Dump of table tokens
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `tokens`;
+
+CREATE TABLE `tokens` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) unsigned NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
