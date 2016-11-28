@@ -1,4 +1,3 @@
-CREATE DATABASE CommonGround;
 # ************************************************************
 # Sequel Pro SQL dump
 # Version 4541
