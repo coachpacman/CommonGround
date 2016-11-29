@@ -14,12 +14,12 @@ router.post('/login', function(req, res, next){
   conn.query(sql, [username, password], function(err, results){
     if (results.length > 0) {
       const token = uuid()
-      const userId = results[0].user_id
+      const userId = results[0].id
 
       const upsertSql = `INSERT INTO tokens (user_id, token) VALUES (?, ?) 
                           ON DUPLICATE KEY UPDATE token=?`
 
-      conn.query(upsertSql, [token, userId, token], function(err, results){
+      conn.query(upsertSql, [userId, token, token], function(err, results){
         if (err) {
           console.log(err)
           res.status(500).send({
@@ -57,10 +57,10 @@ router.post('/register', function(req, res, next){
       })
     } else {
       const insertId = results.insertId
-      const profileSql = `INSERT INTO profiles (first_name, last_name, city, state, avatar)
-                          VALUES (?, ?, ?, ?, ?)`
+      const profileSql = `INSERT INTO profiles (first_name, last_name, city, state, avatar, user_id)
+                          VALUES (?, ?, ?, ?, ?, ?)`
 
-      conn.query(profileSql, [firstName, lastName, city, state, avatar], function(err, results){
+      conn.query(profileSql, [firstName, lastName, city, state, avatar, insertId], function(err, results){
         if (err) {
           console.log(err)
           res.status(500).send({
