@@ -52,12 +52,12 @@ router.get('/topics', function(req, res){
 router.post('/register', function(req, res, next){
   const username = req.body.username
   const password = sha512(req.body.password + config.get('salt')).toString('hex')
-  const firstName = req.body.firstName
-  const lastName = req.body.lastName
-  const city = req.body.city
-  const state = req.body.state
-  const avatar = req.body.avatar
-  const topics = req.body.topics
+  const firstName = req.body.firstName || ''
+  const lastName = req.body.lastName || ''
+  const city = req.body.city || ''
+  const state = req.body.state || ''
+  const avatar = req.body.avatar || ''
+  const topics = req.body.topics || []
   const userSql = 'INSERT INTO users (username, password) VALUES (?, ?)'
 
   conn.query(userSql, [username, password], function(err, results){
