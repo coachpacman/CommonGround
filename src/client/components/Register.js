@@ -1,8 +1,7 @@
 import React from 'react'
 import { browserHistory, Link } from 'react-router'
-import store from 'store'
 import 'assets/styles/register.css'
-import {addUser} from 'api/data'
+import 'assets/lib/cloudinary'
 
 export default React.createClass({
   getIntialState: function() {
@@ -11,6 +10,7 @@ export default React.createClass({
       last_name: "",
       password: "",
       avatar: "",
+      city: "",
       state: "",
       political_affilation: "",
       topics: []
@@ -18,17 +18,25 @@ export default React.createClass({
   },
   handleSubmit: function() {
    var obj = {
-        first_name: appState.first_name,
-        last_name: appState.last_name,
-        password: appState.password,
-        avatar: appState.photo_avatar,
-        city: appState.city,
-        state: appState.state,
-        political_affilation: appState.political_affilation,
-        topics: appState.topics
-  }
-  addUser(obj)
-},
+        first_name: this.state.first_name,
+        last_name: this.state.last_name,
+        password: this.state.password,
+        avatar: this.state.photo_avatar,
+        city: this.state.city,
+        state: this.state.state,
+        political_affilation: this.state.political_affilation,
+        topics: this.state.topics
+    }
+  },
+  upload: function(e) {
+    e.preventDefault()
+    var settings = {cloud_name: 'dxpodvk7x' , upload_preset: 'v9doyprk'} 
+    window.cloudinary.openUploadWidget(settings, (error, result)  => {
+      this.setState({
+        avatar: result[0].avatar
+      }) 
+    });
+  },
 
   render: function () {
     return (
@@ -41,12 +49,12 @@ export default React.createClass({
               <div className="registerform_container">
                 <p className="register_header">Register</p>
                 <input type="text" id="username" placeholder="Username" /><br />
+                <input type="password" id="password" placeholder="Create Password" /><br />
                 <input type="text" id="firstname" placeholder="First Name" /><br />
                 <input type="text" id="lastname" placeholder="Last Name" />
-                <input type="password" id="password" placeholder="Create Password" /><br />
-                <input name="file" type="file" className="cloudinary-fileupload" data-cloudinary-field="image_id" data-form-data=" ... html-escaped JSON data ... "/>
+                <input type="text" id="city" placeholder="City" />
                 <select className="register_state_select">
-                  <option selected="selected">Select State</option>
+                  <option defaultValue="selected">Select State</option>
                   <option value="AL">Alabama</option>
                   <option value="AK">Alaska</option>
                   <option value="AZ">Arizona</option>
@@ -100,11 +108,12 @@ export default React.createClass({
                   <option value="WY">Wyoming</option>
                 </select>
                 <select className="register_affilation_select">
-                  <option selected="selected">Select Political Affilation</option>
+                  <option defaultValue="selected">Select Political Affilation</option>
                   <option value="D">Democrat</option>
                   <option value="R">Republican</option>
                   <option value="I">Independent</option>
                 </select> 
+                <button type="button" id="avatar" onClick={this.upload}>Upload Avatar</button>
             </div>
           <div className="select--topic--container">
                   <div className="register_topic_select">Select Topics of Interests:</div>
@@ -124,7 +133,7 @@ export default React.createClass({
                    <label className="labels"><input className="topic_checkbox" type="checkbox" value="Taxes"/>Taxes</label>
                    <label className="labels"><input className="topic_checkbox" type="checkbox" value="Death Penalty"/>Death Penalty</label>
             </div>
-                <Link to="/dashboard/"><button className="button button--state-register--register">Register</button></Link>
+                <Link to="/dashboard/"><button type="submit" className="button button--state-register--register">Register</button></Link>
           
       </form>
   </div>
