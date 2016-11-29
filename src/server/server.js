@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import apiRouter from './api/router'
 import upsertUser from './api/upsertUser'
-import {authenticate, formatResponse} from './lib/middleware'
+import {authenticate, formatResponse} from './api/lib/middleware'
 
 export default function (config) {
   const app = express()
@@ -23,8 +23,6 @@ export default function (config) {
   app.get('*', function (req, res) {
     res.sendFile(path.resolve('./dist/index.html'))
   })
-
-
 
   app.listen(config.port, config.hostname, function () {
     console.log(chalk.cyan('Server Listening on port: ') + config.port)

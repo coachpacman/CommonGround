@@ -1,12 +1,4 @@
-import config from 'config'
-import mysql form 'mysql'
-
-const conn = mysql.createConnection({
-  host: config.get('db.hostname'),
-  user: config.get('db.username'),
-  password: config.get('db.password'),
-  database: config.get('db.database')
-})
+import conn from './db'
 
 export function formatResponse(req, res, next) {
   res.json({
@@ -17,7 +9,7 @@ export function formatResponse(req, res, next) {
 }
 
 export function authenticate(req, res, next) {
-  const token = req.body.token || req.params.token || req.get('Authorization')
+  let token = req.body.token || req.params.token || req.get('Authorization')
 
   if (token) {
     if (/^Authorization /.test(token)) {
